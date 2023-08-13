@@ -29,7 +29,22 @@ def remap_colors(rgb_channels, rgb_values, num_colors):
     new_palette = mypalette.copy()
     new_palette[0] = lab_color
     image_lab_m = transfer.image_transfer(image_lab, mypalette, new_palette, sample_level=10, luminance_flag=0)
-    return util.lab2rgb(image_lab_m)
+    # Get pixel data from LAB images
+    image1_data = list(image_lab.getdata())
+    image2_data = list(image_lab_m.getdata())
+
+# Calculate the average of LAB values for each pixel
+    averaged_data = []
+    for lab1, lab2 in zip(image1_data, image2_data):
+        average_lab = tuple(int((l1 + l2) / 2) for l1, l2 in zip(lab1, lab2))
+        averaged_data.append(average_lab)
+
+    # Create a new image with averaged LAB values
+    averaged_image_lab = Image.new('LAB', image_lab.size)
+    averaged_image_lab.putdata(averaged_data)
+
+        
+    return util.lab2rgb(averaged_image_lab)
 
 def getRGB(object, adjective):
     outtext = openai.Completion.create(
@@ -74,7 +89,7 @@ class Predictor(BasePredictor):
         """Run a single prediction on the model"""
 
         try:
-            openai.api_key = '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'
+            openai.api_key = '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'
             rgb_image = Image.open(image)
             generated_color = getRGB(object, adjective)
             remapped = remap_colors(rgb_image, ast.literal_eval(generated_color.strip()), 2)
