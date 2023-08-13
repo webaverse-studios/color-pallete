@@ -89,7 +89,7 @@ class Predictor(BasePredictor):
         """Run a single prediction on the model"""
 
         try:
-            openai.api_key = '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'
+            openai.api_key = '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'
             rgb_image = Image.open(image)
             generated_color = getRGB(object, adjective)
             remapped = remap_colors(rgb_image, ast.literal_eval(generated_color.strip()), 2)
