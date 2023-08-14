@@ -13,9 +13,6 @@ build:
     - "pip install openai"
     - "pip install numpy"
     - "pip install Pillow"
-  
-  environment:
-    - OPENAI_KEY=1234
 
 # predict.py defines how predictions are run on your model
 predict: "predict.py:Predictor"
