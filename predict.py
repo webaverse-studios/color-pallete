@@ -90,8 +90,8 @@ class Predictor(BasePredictor):
         """Run a single prediction on the model"""
 
         try:
-            openai.api_key = os.environ["OPENAI_KEY"]
-            print("openai key:", os.environ["OPENAI_KEY"])
+            openai.api_key = os.getenv("OPENAI_KEY", None)
+            print("openai key:", os.getenv("OPENAI_KEY", None))
             rgb_image = Image.open(image)
             generated_color = getRGB(object, adjective)
             remapped = remap_colors(rgb_image, ast.literal_eval(generated_color.strip()), 2)
