@@ -19,6 +19,8 @@ try:
 except RuntimeError:
     pass
 
+print("openai key:", os.getenv("OPENAI_KEY", None))
+            
 def remap_colors(rgb_channels, rgb_values, num_colors):
     image_lab = transfer.rgb2lab(rgb_channels)
     mypalette = palette.build_palette(image_lab, num_colors)
@@ -91,7 +93,6 @@ class Predictor(BasePredictor):
 
         try:
             openai.api_key = os.getenv("OPENAI_KEY", None)
-            print("openai key:", os.getenv("OPENAI_KEY", None))
             rgb_image = Image.open(image)
             generated_color = getRGB(object, adjective)
             remapped = remap_colors(rgb_image, ast.literal_eval(generated_color.strip()), 2)
