@@ -3,7 +3,7 @@
 
 from cog import BasePredictor, Input, Path
 from typing import Any
-from envReader import read, getValue
+import os
 
 from PIL import Image
 import openai
@@ -13,8 +13,6 @@ import base64
 from multiprocessing import set_start_method
 
 from recolor import transfer, util, palette
-
-read()
 
 try:
     set_start_method('spawn')
@@ -92,8 +90,8 @@ class Predictor(BasePredictor):
         """Run a single prediction on the model"""
 
         try:
-            openai.api_key = getValue('OPENAI_API_KEY')
-            print(getValue("OPENAI_API_KEY"))
+            openai.api_key = os.environ["OPENAI_KEY"]
+            print("openai key:", os.environ["OPENAI_KEY"])
             rgb_image = Image.open(image)
             generated_color = getRGB(object, adjective)
             remapped = remap_colors(rgb_image, ast.literal_eval(generated_color.strip()), 2)
