@@ -2,7 +2,8 @@
 # https://github.com/replicate/cog/blob/main/docs/python.md
 
 from cog import BasePredictor, Input, Path
-from typing import Any, List
+from typing import Any
+from envReader import read, getValue
 
 from PIL import Image
 import openai
@@ -12,6 +13,8 @@ import base64
 from multiprocessing import set_start_method
 
 from recolor import transfer, util, palette
+
+read()
 
 try:
     set_start_method('spawn')
@@ -89,7 +92,8 @@ class Predictor(BasePredictor):
         """Run a single prediction on the model"""
 
         try:
-            openai.api_key = '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'
+            openai.api_key = getValue('OPENAI_API_KEY')
+            print(getValue("OPENAI_API_KEY"))
             rgb_image = Image.open(image)
             generated_color = getRGB(object, adjective)
             remapped = remap_colors(rgb_image, ast.literal_eval(generated_color.strip()), 2)
